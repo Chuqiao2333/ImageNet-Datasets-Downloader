@@ -36,7 +36,7 @@ if not os.path.isdir(args.data_root):
     exit()
 
 
-IMAGENET_API_WNID_TO_URLS = lambda wnid: f'http://www.image-net.org/api/text/imagenet.synset.geturls?wnid={wnid}'
+IMAGENET_API_WNID_TO_URLS = lambda wnid: 'http://www.image-net.org/api/text/imagenet.synset.geturls?wnid=' + wnid
 
 current_folder = os.path.dirname(os.path.realpath(__file__))
 
@@ -69,8 +69,8 @@ elif args.use_class_list == False:
                 potential_class_pool.append(key)
 
     if (len(potential_class_pool) < args.number_of_classes):
-        logging.error(f"With {args.images_per_class} images per class there are {len(potential_class_pool)} to choose from.")
-        logging.error(f"Decrease number of classes or decrease images per class.")
+        logging.error("With {args.images_per_class} images per class there are {len(potential_class_pool)} to choose from.")
+        logging.error("Decrease number of classes or decrease images per class.")
         exit()
 
     picked_classes_idxes = np.random.choice(len(potential_class_pool), args.number_of_classes, replace = False)
@@ -184,14 +184,14 @@ def print_stats(cls, print_func):
 
     #print(f"actual all time: {actual_all_time_spent} proc all time {processes_all_time_spent}")
 
-    print_func(f'STATS For class {cls}:')
-    print_func(f' tried {multi_stats.get(cls, "tried")} urls with'
-               f' {multi_stats.get(cls, "success")} successes')
+    print_func('STATS For class {cls}:')
+    print_func(' tried {multi_stats.get(cls, "tried")} urls with'
+               ' {multi_stats.get(cls, "success")} successes')
 
     if multi_stats.get(cls, "tried") > 0:
-        print_func(f'{100.0 * multi_stats.get(cls, "success")/multi_stats.get(cls, "tried")}% success rate for {cls} urls ')
+        print_func('{100.0 * multi_stats.get(cls, "success")/multi_stats.get(cls, "tried")}% success rate for {cls} urls ')
     if multi_stats.get(cls, "success") > 0:
-        print_func(f'{multi_stats.get(cls,"time_spent") * actual_processes_ratio / multi_stats.get(cls,"success")} seconds spent per {cls} succesful image download')
+        print_func('{multi_stats.get(cls,"time_spent") * actual_processes_ratio / multi_stats.get(cls,"success")} seconds spent per {cls} succesful image download')
 
 
 
@@ -316,7 +316,7 @@ def get_image(img_url):
 for class_wnid in classes_to_scrape:
 
     class_name = class_info_dict[class_wnid]["class_name"]
-    print(f'Scraping images for class \"{class_name}\"')
+    print('Scraping images for class \"{class_name}\"')
     url_urls = IMAGENET_API_WNID_TO_URLS(class_wnid)
 
     time.sleep(0.05)
@@ -333,6 +333,6 @@ for class_wnid in classes_to_scrape:
     #for url in  urls:
     #    get_image(url)
 
-    print(f"Multiprocessing workers: {args.multiprocessing_workers}")
+    print("Multiprocessing workers: {args.multiprocessing_workers}")
     with Pool(processes=args.multiprocessing_workers) as p:
         p.map(get_image,urls)
